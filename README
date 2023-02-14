@@ -1,0 +1,80 @@
+Code to old wgs pipeline.
+Developed to work in the secure environment of tsd (https://www.uio.no/english/services/it/research/sensitive-data/) and their setup at that time (2018) using Slurm Workload Manager "SBATCH"  to send jobs to clusters. Could then preprocess fasta files  of multiple samples in parallel.
+
+
+
+This file is trying to keep track of all scripts that are in this directory. What their job is and how they are being used.
+
+################################
+WGS PIPELINE:
+################################
+
+includes the following scripts:
+wgs_pipe.sh
+wrap_wgs.sh
+config_wgs.xml
+
+
+All steps that are needed to analyse NGS data (wgs) are included as functions in the wgs_pipe script.
+To see how those funcitons are called look at the help():
+> ./wgs_pipe.sh -h
+Functions include:
+-trimming
+-alignment(bwa mem, indexing dedupping, recalibrating bases)
+-variant calling with the haplotype caller
+-variant recalibration, see help for which parameters can be set
+-variant calling (joint calling and merging, see help for details
+
+All tools and reference data that are being used in this pipeline are specified the config_wgs.xml file and can be changed accordingly (might cause failures along the way when newer versions of tools change syntax)
+
+wgs_pipe.sh is a bashscript and should be called by:
+wrap_wgs.sh which is a bash  - sbatch script which specifies the resources used on  colossus.
+this script is called with
+> sbatch wrap_wgs.sh
+wrap_wgs.sh should be edited for each job accordingly. It needs specifications on which input files, outputdirectories and so on
+It is called and adjusted sample_wise.
+Also see /cluster/projects/p94/fdi/jobscripts/wrap_varcall.sh
+for another example of this kind of file. (This file only calls functions for variant calling of the wgs_pipe.sh)
+
+
+
+################################
+CNV PIPELINE:
+################################
+includes the following scripts:
+cnv_template.sh
+cnv_pipe.pl
+
+
+works with a different principle.
+Here the main script is a perl script:
+> perl cnv_pipe.pl inputsample_1 [..] inputsample_n
+this perl script generates a jobscript which will be a bash script for each sample that is being analysed.
+For this script generation it uses the template file: cnv_template.sh
+And invokes 
+> sbatch jobscript.sh
+after script generation.
+It spreads multiple samples to run in parallel on /cluster.
+The difference to wgs_pipe.sh is, that it has a wrapper script (perl) that makes it possible to automatically generate jobscripts for all samples
+to make them run in paralell on colossus, whereas in WGS PIPELINE, you need to manually generate your verison of wrapper script for each sample.
+But in contrast to wgs_pipe, cnv_pipe has all job steps (cnvnator steps and erds command) within the sbatch script...which might not be so good after all.
+
+
+#################################
+other
+##################################
+this includes:
+general_job.sh
+split_vcf.sh
+
+general_job.sh is a sbatch jobscript with no special specificications and just calls a command or script with max 2 further input parameters.
+
+>sbatch general_job.sh <cmd> <param1> <param2>
+
+for example the split_vcf.sh script, which is a short script to split multi vcf files to one_sampled vcf files. since
+this is not a sbatch script it can not be executed on colossus. to do this you can call it with the general_job.sh script like so:
+
+>sbatch general_job.sh split_vcf.sh /vcf_input/dir /output/dir
+
+
+

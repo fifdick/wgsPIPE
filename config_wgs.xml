@@ -1,0 +1,77 @@
+<dependencies>
+<module>
+<bwa>
+<value version="0.7.8"></value>
+</bwa>
+</module>
+<module>
+<samtools>
+<value version="1.3.1"></value>
+</samtools>
+</module>
+<module>
+<R>
+<value version="3.4.0"></value>
+</R>
+</module>
+<module>
+<gatk>
+<value version="3.8"></value>
+</gatk>
+</module>
+<tool>	
+<value name="java"></value>
+<value version="jdk1.8.0_112/bin/java"></value>
+<value location="/cluster/software/VERSIONS/java/"></value>
+</tool>
+<tool>
+<value name="trimmomatic"></value>
+<value version="Trimmomatic-0.33/trimmomatic-0.33.jar"></value>
+<value location="/cluster/shared/bioinformatics/src/"></value>
+<value required="java"></value>
+</tool>
+<tool>
+<value name="picard"></value>
+<value version="picard-tools-1.129/picard.jar"></value>
+<value location="/cluster/shared/bioinformatics/src/"></value>
+<value required="java"></value>
+</tool>
+<tool>
+<value name="gatk"></value>
+<value version="gatk-3.8/GenomeAnalysisTK.jar"></value>
+<value location="/cluster/software/VERSIONS/"></value>
+<value required="java"></value>
+</tool>
+<file>
+<value name="adapters"></value>
+<value location="/cluster/shared/bioinformatics/src/Trimmomatic-0.33/adapters/TruSeq3-PE-2.fa"></value>
+</file>
+<file>
+<value name="reference"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/human_g1k_v37_decoy.fasta"></value>
+</file>
+<file>
+<value name="known_snps"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/dbsnp_138.b37.vcf"></value>
+</file>
+<file>
+<value name="known_indels"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/Mills_and_1000G_gold_standard.indels.b37.vcf"></value>
+</file>
+<file>
+<value name="hapmap"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/hapmap_3.3.b37.vcf"></value>
+</file>
+<file>
+<value name="omni"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/1000G_omni2.5.b37.vcf"></value>
+</file>
+<file>
+<value name="snps_1kg"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/1000G_phase1.snps.high_confidence.b37.vcf"></value>
+</file>
+<file>
+<value name="indels_1kg"></value>
+<value location="/cluster/shared/bioinformatics/reference-data/b37/GATK2.8/1000G_phase1.indels.b37.vcf"></value>
+</file>
+</dependencies>
